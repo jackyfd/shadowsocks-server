@@ -22,7 +22,7 @@ public class ShadowSocksServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new ShadowSocksHandler(CryptoFactory.create(cryptoMethod, password)));
+                            socketChannel.pipeline().addLast(new AddressHandler(CryptoFactory.create(cryptoMethod, password)));
                         }
                     });
             ChannelFuture channelFuture = bootstrap.bind().sync();
