@@ -62,7 +62,7 @@ public class AddressHandler extends ChannelInboundHandlerAdapter {
             dataQueue.readBytes(ipBytes);
             port = dataQueue.readShort();
         } else if (addressType == ADDR_TYPE_HOST) {
-            int hostLength = dataQueue.getUnsignedByte(2);
+            int hostLength = dataQueue.getUnsignedByte(1);
             if (dataQueue.readableBytes() < hostLength + 4) {
                 return;
             }

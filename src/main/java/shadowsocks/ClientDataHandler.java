@@ -6,6 +6,8 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import shadowsocks.crypto.SSCrypto;
 
 import java.net.InetAddress;
@@ -26,6 +28,7 @@ public class ClientDataHandler extends ChannelInboundHandlerAdapter {
     private void init(String host, int port, final ChannelHandlerContext clientCtx, final ByteBuf byteBuffer, final SSCrypto ssCrypto) {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(clientCtx.channel().eventLoop())
+                .channel(NioSocketChannel.class)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5 * 1000)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -34,16 +37,21 @@ public class ClientDataHandler extends ChannelInboundHandlerAdapter {
                     }
                 });
         try {
-            ChannelFuture channelFuture = bootstrap.connect(InetAddress.getByAddress(host.getBytes()), port);
+            ChannelFuture channelFuture = bootstrap.connect(InetAddress.getByName(host), port);
             channelFuture.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
+                        System.out.printf("successfully to connect to %s:%s", host, port);
                         remoteChannel.set(future.channel());
+                    } else {
+                        System.out.printf("error to connect to %s:%s", host, port);
+                        clientCtx.close();
                     }
                 }
             });
         } catch (Exception e) {
+            e.printStackTrace();
             clientCtx.close();
         }
     }
