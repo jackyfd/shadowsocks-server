@@ -7,9 +7,13 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import shadowsocks.crypto.CryptoFactory;
 
 public class ShadowSocksServer {
+
+    private static Logger logger = LoggerFactory.getLogger(ShadowSocksServer.class);
 
     public void start(String serverHost, int serverPort, String cryptoMethod, String password) throws InterruptedException {
         NioEventLoopGroup group = new NioEventLoopGroup(2);
@@ -26,7 +30,7 @@ public class ShadowSocksServer {
                         }
                     });
             ChannelFuture channelFuture = bootstrap.bind().sync();
-            System.out.println("started and listen on " + channelFuture.channel().localAddress());
+            logger.info("started and listen on " + channelFuture.channel().localAddress());
             channelFuture.channel().closeFuture().sync();
 
         } finally {

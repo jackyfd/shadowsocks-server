@@ -8,6 +8,8 @@ import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import shadowsocks.crypto.SSCrypto;
 
 import java.net.InetAddress;
@@ -15,6 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientDataHandler extends ChannelInboundHandlerAdapter {
 
+
+    private static Logger logger = LoggerFactory.getLogger(ClientDataHandler.class);
     private final SSCrypto ssCrypto;
     private final AtomicReference<Channel> remoteChannel = new AtomicReference<>();
     private final ByteBuf clientCache;
@@ -42,10 +46,10 @@ public class ClientDataHandler extends ChannelInboundHandlerAdapter {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
-                        System.out.printf("successfully to connect to %s:%s", host, port);
+                        logger.info("successfully to connect to {}:{}", host, port);
                         remoteChannel.set(future.channel());
                     } else {
-                        System.out.printf("error to connect to %s:%s", host, port);
+                        logger.info("error to connect to {}:{}", host, port);
                         clientCtx.close();
                     }
                 }
