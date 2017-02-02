@@ -75,6 +75,14 @@ public class ClientDataHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.close();
+        if(remoteChannel.get() != null){
+            remoteChannel.get().close();
+        }
+    }
+
     public static class RemoteDataHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
         private final ChannelHandlerContext clientCtx;
@@ -102,6 +110,12 @@ public class ClientDataHandler extends ChannelInboundHandlerAdapter {
                 ctx.close();
                 clientCtx.close();
             }
+        }
+
+        @Override
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            ctx.close();
+            clientCtx.close();
         }
 
         @Override

@@ -30,6 +30,12 @@ public class AddressHandler extends ChannelInboundHandlerAdapter {
         logger.info("connected with {}", ctx.channel());
     }
 
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        ctx.close();
+    }
+
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         logger.info("disconnected with {}", ctx.channel());
