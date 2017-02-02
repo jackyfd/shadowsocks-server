@@ -16,7 +16,7 @@ public class ServerMain {
 
     private static void setOps(String[] argv) {
         LongOpt[] longopts = new LongOpt[3];
-        longopts[0] = new LongOpt("serverHost", LongOpt.NO_ARGUMENT, null, 's');
+        longopts[0] = new LongOpt("serverHost", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[1] = new LongOpt("port", LongOpt.REQUIRED_ARGUMENT, null, 'p');
         longopts[2] = new LongOpt("password", LongOpt.REQUIRED_ARGUMENT, null, 'k');
 
@@ -25,7 +25,7 @@ public class ServerMain {
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
-                case 's':
+                case 'h':
                     serverHost = g.getOptarg();
                     break;
                 case 'p':
