@@ -64,8 +64,8 @@ public class AddressHandler extends ChannelInboundHandlerAdapter {
             // addrType(1) + ipv4(4) + port(2)
             dataQueue.readUnsignedByte();
             byte[] ipBytes = new byte[4];
-            host = InetAddress.getByAddress(ipBytes).toString().substring(1);
             dataQueue.readBytes(ipBytes);
+            host = InetAddress.getByAddress(ipBytes).toString().substring(1);            
             port = dataQueue.readShort();
         } else if (addressType == ADDR_TYPE_HOST) {
             int hostLength = dataQueue.getUnsignedByte(1);
