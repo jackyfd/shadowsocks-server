@@ -5,7 +5,7 @@ import gnu.getopt.LongOpt;
 
 public class ServerMain {
 
-    private static String serverHost = "127.0.0.1";
+    private static String serverHost = "0.0.0.0";
     private static int port = 8000;
     private static String password = "123456";
 
